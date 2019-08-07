@@ -8,18 +8,18 @@ function append(parent, el) {
   return parent.appendChild(el);
 }
 
-const ul = document.getElementById('authors');
+const ul = document.getElementById('fruits');
 const url = 'https://randomuser.me/api/?results=10';
 fetch(url)
 .then((resp) => resp.json())
 .then(function(data) {
-  let authors = data.results;
-  return authors.map(function(author) {
+  let fruits = data.results;
+  return fruits.map(function(fruit) {
     let li = createNode('li'),
         img = createNode('img'),
         span = createNode('span');
-    img.src = author.picture.medium;
-    span.innerHTML = `${author.name.first} ${author.name.last}`;
+    img.src = fruit.picture.medium;
+    span.innerHTML = `${fruit.name.first} ${fruit.name.last}`;
     append(li, img);
     append(li, span);
     append(ul, li);

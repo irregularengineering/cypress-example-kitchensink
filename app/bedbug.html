@@ -111,21 +111,12 @@
                 ><code>cy.contains()</code></a
               >
             </p>
-            <pre><code class="javascript">cy.get('.query-list')
-  .contains('bananas').should('have.class', 'third')
+            <pre><code class="javascript">cy.get('.fruits')
+  .contains('bananas').should('have.class', 'well')
 
 // we can pass a regexp to `.contains()`
-cy.get('.query-list')
-  .contains(/^b\w+/).should('have.class', 'third')
-
-cy.get('.query-list')
-  .contains('apples').should('have.class', 'first')
-
-// passing a selector to contains will
-// yield the selector containing the text
-cy.get('#querying')
-  .contains('ul', 'oranges')
-  .should('have.class', 'query-list')
+cy.get('.fruits')
+  .contains(/^b\w+/)
 
 cy.get('.query-button')
   .contains('Save Form')
@@ -134,8 +125,8 @@ cy.get('.query-button')
           <div class="col-xs-5">
             <div class="well">
               <ul class="query-list">
-                  <h1>Authors</h1>
-                  <ul id="authors"></ul>
+                  <h1>Fruits</h1>
+                  <ul id="fruits"></ul>
               </ul>
               <div class="query-button">
                 <button class="btn btn-default"><span>Save Form</span></button>
