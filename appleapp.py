@@ -23,7 +23,7 @@ def button_text_route(username=""):
         accept_header = request.headers.get('Accept')
         
         if not username:
-            button_text = "<p>Send to Paul</p>"
+            button_text = "Send to Paul"
         else:
             button_text = "<p>Hello, {}</p>".format(username)
         #handle base case - no accept header given
@@ -42,7 +42,13 @@ def button_text_route(username=""):
 @app.route("/fruits", methods=['GET', 'POST'])
 def fruit_list(username=""):
 
-
+    if request.method == 'GET':
+        fruit_list = "Good morning {}".format(username)
+        data = {"message": fruit_list}
+        response = app.response_class(response=json.dumps(data),
+                                        status=200,
+                                        )    
+        return response
     # POST request - just respond with something and a 200
     if request.method == 'POST':
         response = app.response_class(response="""There is no defined behaviour for POST""",

@@ -1,33 +1,59 @@
 /// <reference types="Cypress" />
 
-context('Bedbugging examples', () => {
+context('Aliasing', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8080/bedbug')
   })
 
-  it('cy.contains() - query DOM elements with matching content', () => {
-    // https://on.cypress.io/contains
-    cy.get('.query-list')
-      .contains('bananas')
-      .should('have.class', 'third')
+  it('.as() - alias a route for later use', () => {
 
-    // we can pass a regexp to `.contains()`
-    cy.get('.query-list')
-      .contains(/^b\w+/)
-      .should('have.class', 'third')
+    // Alias the route to wait for its response
+    cy.server()
+    cy.route('GET', 'comments/*').as('getComment')
 
-    cy.get('.query-list')
-      .contains('apples')
-      .should('have.class', 'first')
+    // we have code that gets a comment when
+    // the button is clicked in scripts.js
+    cy.get('.network-btn').click()
 
-    // passing a selector to contains will
-    // yield the selector containing the text
-    cy.get('#querying')
-      .contains('ul', 'oranges')
-      .should('have.class', 'query-list')
+    cy.wait('@getComment').its('status').should('eq', 200)
+    cy.get('.network-comment').should('contain', 'dolor')
 
-    cy.get('.query-button')
-      .contains('Save Form')
-      .should('have.class', 'btn')
   })
+
+  it('doesnt fail when error is injected because of poor test design', () => {
+    // now let's bedbug this mother
+    cy.server()
+    
+    cy.route({
+      method: 'GET',      // Route all GET requests
+      url: 'comments/*',    // that have a URL that matches '/users/*'
+      status: 412,
+    }).as('getBadComment')
+
+    cy.get('.network-btn').click()
+
+    // cy.wait('@getBadComment').its('status').should('eq', 200)
+    cy.get('.network-comment').should('contain', 'dolor')
+      })
+
+    it('should fail when error is injected', () => {
+      // now let's bedbug this mother
+      cy.server()
+      
+      cy.route({
+        method: 'GET',      // Route all GET requests
+        url: 'comments/*',    // that have a URL that matches '/users/*'
+        status: 412,
+        response: {
+          // simulate a redirect to another page
+          redirect: '/error'
+        }          
+      }).as('getBadComment')
+  
+      cy.get('.network-btn').click()
+  
+      cy.wait('@getBadComment').its('status').should('eq', 200)
+      cy.get('.network-comment').should('contain', 'dolor')
+        })
+
 })

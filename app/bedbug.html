@@ -97,52 +97,52 @@
       </div>
     </div>
     <div class="container content-container">
-      <div id="querying">
+    <div id="as">
+      <div class="row">
 
+        <div class="col-xs-7">
+          <h4>YIKES! Bedbugs! </h4>
+          <pre><code class="javascript">      
 
-        <div class="col-xs-12"><hr /></div>
+// Alias the route to wait for its response
+cy.server()
+cy.route('GET', 'comments/*').as('getComment')
 
-        <div class="row">
-          <div class="col-xs-7">
-            <h4><a href="https://on.cypress.io/contains">cy.contains()</a></h4>
-            <p>
-              We can find elements by their content using
-              <a href="https://on.cypress.io/contains"
-                ><code>cy.contains()</code></a
-              >
-            </p>
-            <pre><code class="javascript">cy.get('.fruits')
-  .contains('bananas').should('have.class', 'well')
+// we have code that gets a comment when
+// the button is clicked in scripts.js
+cy.get('.network-btn').click()
 
-// we can pass a regexp to `.contains()`
-cy.get('.fruits')
-  .contains(/^b\w+/)
-
-cy.get('.query-button')
-  .contains('Save Form')
-  .should('have.class', 'btn')</code></pre>
+// https://on.cypress.io/wait
+cy.wait('@getComment').its('status').should('eq', 200)
+</code></pre>
+        </div>
+        <div class="col-xs-5">
+          <div class="well">
+            <button class="network-btn btn btn-primary">Get Comment</button>
+            <div class="network-comment"></div>
+            <table class="as-table table table-bordered">
+              <thead>
+                <tr>
+                  <th>Column 1</th>
+                  <th>Column 2</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
           </div>
-          <div class="col-xs-5">
-            <div class="well">
-              <ul class="query-list">
-                  <h1>Fruits</h1>
-                  <ul id="fruits"></ul>
-              </ul>
-              <div class="query-button">
-                <button class="btn btn-default"><span>Save Form</span></button>
-              </div>
-            </div>
-          </div>
+        </div>
 
-
-
+        <div class="col-xs-12"><hr></div>
       </div>
     </div>
+  </div>
 
-    <script src="/assets/js/vendor/jquery-1.12.0.min.js"></script>
-    <script src="/assets/js/vendor/bootstrap.min.js"></script>
-    <script src="/assets/js/vendor/highlight.pack.js"></script>
-    <script src="/assets/js/scripts.js"></script>
-    <script src="/assets/js/fruits.js"></script>
-  </body>
+  <script src="/assets/js/vendor/jquery-1.12.0.min.js"></script>
+  <script src="/assets/js/vendor/bootstrap.min.js"></script>
+  <script src="/assets/js/vendor/highlight.pack.js"></script>
+  <script src="/assets/js/scripts.js"></script>
+  <script src="/assets/js/fruits.js"></script>
+
+</body>
 </html>
