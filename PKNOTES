@@ -1,0 +1,18 @@
+## install the node_modules
+npm install
+
+## start the local webserver
+npm start
+
+## new tab
+## launch the cypress test runner
+npm run cy:open
+
+
+## run flask app
+python appleapp.py
+
+
+
+
+# to dos - add to the page as li
