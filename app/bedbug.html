@@ -112,8 +112,25 @@ cy.route('GET', 'comments/*').as('getComment')
 // the button is clicked in scripts.js
 cy.get('.network-btn').click()
 
-// https://on.cypress.io/wait
+
+// and check for comment text
+cy.get('.network-comment').should('contain', 'dolor')
+
+// now let's bedbug a bit by injecting a 412 error. this looks like this:
+cy.server()
+
+cy.route({
+  method: 'GET',      // Route all GET requests
+  url: 'comments/*',    // that have a URL that matches '/users/*'
+  status: 412,
+}).as('getBadComment')
+
+cy.get('.network-btn').click()
+cy.get('.network-comment').should('contain', 'dolor')
+
+// injecting a 412 response will not be caught unless we check status 
 cy.wait('@getComment').its('status').should('eq', 200)
+
 </code></pre>
         </div>
         <div class="col-xs-5">
