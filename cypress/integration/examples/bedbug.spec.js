@@ -32,8 +32,8 @@ context('Aliasing', () => {
 
     cy.get('.network-btn').click()
 
-    // cy.wait('@getBadComment').its('status').should('eq', 200)
-    cy.get('.network-comment').should('contain', 'dolor')
+    cy.wait('@getBadComment').its('status').should('eq', 200)
+    // cy.get('.network-comment').should('contain', 'dolor')
   })
 
   it('should fail when error is injected', () => {
@@ -43,10 +43,9 @@ context('Aliasing', () => {
     cy.route({
       method: 'GET',      // Route all GET requests
       url: 'comments/*',    // that have a URL that matches '/users/*'
-      status: 412,
+      status: 200,
       response: {
-        // simulate a redirect to another page
-        redirect: '/error'
+        body: "this is a nasty rude message that should never have been posted here"
       }
     }).as('getBadComment')
 
